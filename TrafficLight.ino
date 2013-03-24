@@ -44,7 +44,7 @@ void loop() {
   }
   if (timedChangeSwitch.switched()){
     timedChange = timedChangeSwitch.on();
-    Serial.print("Manual change is now ");
+    Serial.print("Timed change is now ");
     Serial.println(timedChange);
   }
   
