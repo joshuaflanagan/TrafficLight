@@ -9,12 +9,14 @@ ShiftBrite led(11, 13, 9, 10);
 Switch changeColorButton(2);
 Switch useYellowSwitch(4);
 Switch timedChangeSwitch(7);
+Switch randomTimeSwitch(8);
  
 int currentColor = GREEN;
 unsigned long lastChangeTime = 0;
 
 // These will be controlled by hardware inputs
 int waitTimes[] = {3000, 2000, 3000};
+int waitTime = 0;
 boolean includeYellow;
 boolean timedChange;
 
@@ -36,6 +38,7 @@ void loop() {
   changeColorButton.poll();
   useYellowSwitch.poll();
   timedChangeSwitch.poll();
+  randomTimeSwitch.poll();
   
   if (useYellowSwitch.switched()){
     includeYellow = useYellowSwitch.on();
@@ -53,9 +56,14 @@ void loop() {
     timeToChange = true;
   }
 
+  if (timedChange && randomTimeSwitch.switched()){
+    Serial.print("Use random time is now ");
+    Serial.println(randomTimeSwitch.on());
+  }
+
   if (timedChange) {
     unsigned long now = millis();
-    if (now - lastChangeTime > waitTimes[currentColor]){
+    if (now - lastChangeTime > waitTime){
       lastChangeTime = now;
       timeToChange = true;
     }
@@ -64,11 +72,20 @@ void loop() {
   // update state
   if (timeToChange){
     cycleToNextColor();
+    waitTime = determineWaitTime();
   }
   
   // paint
   if (timeToChange) {
     updateColor();
+  }
+}
+
+int determineWaitTime(){
+  if (randomTimeSwitch.on()){
+    return random(1, 6) * 1000;
+  } else {
+    return waitTimes[currentColor];
   }
 }
 
