@@ -10,16 +10,22 @@ Switch changeColorButton(2);
 Switch useYellowSwitch(4);
 Switch timedChangeSwitch(7);
  
-int currentColor = RED;
+int currentColor = GREEN;
 unsigned long lastChangeTime = 0;
 
 // These will be controlled by hardware inputs
 int waitTimes[] = {3000, 2000, 3000};
-boolean includeYellow = true;
-boolean timedChange = true;
+boolean includeYellow;
+boolean timedChange;
 
 void setup() {
   Serial.begin(9600);
+  // check initial state of switches
+  useYellowSwitch.poll();
+  includeYellow = useYellowSwitch.on();
+  timedChangeSwitch.poll();
+  timedChange = timedChangeSwitch.on();
+
   updateColor();
 }
 
