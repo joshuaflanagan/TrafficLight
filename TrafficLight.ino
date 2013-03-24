@@ -16,7 +16,7 @@ unsigned long lastChangeTime = 0;
 
 // These will be controlled by hardware inputs
 int waitTimes[] = {3000, 2000, 3000};
-int waitTime = 0;
+int waitTime;
 boolean includeYellow;
 boolean timedChange;
 
@@ -27,6 +27,7 @@ void setup() {
   includeYellow = useYellowSwitch.on();
   timedChangeSwitch.poll();
   timedChange = timedChangeSwitch.on();
+  waitTime = determineWaitTime();
 
   updateColor();
 }
@@ -82,6 +83,7 @@ void loop() {
 }
 
 int determineWaitTime(){
+  if (currentColor == YELLOW) return waitTimes[YELLOW];
   if (randomTimeSwitch.on()){
     return random(1, 6) * 1000;
   } else {
