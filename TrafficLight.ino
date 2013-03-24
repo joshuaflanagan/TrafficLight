@@ -6,11 +6,9 @@ ShiftBrite led(11, 13, 9, 10);
  
 int currentColor = RED;
 unsigned long lastChangeTime = 0;
-int waitTime;
 
 // These will be controlled by hardware inputs
-int redGreenTime = 3000;
-int yellowTime = 2000;
+int waitTimes[] = {3000, 2000, 3000};
 boolean includeYellow = true;
 
 void setup() {
@@ -22,7 +20,7 @@ void loop() {
   
   // check input
   unsigned long now = millis();
-  if (now - lastChangeTime > waitTime){
+  if (now - lastChangeTime > waitTimes[currentColor]){
     lastChangeTime = now;
     timeToChange = true;
   }
@@ -41,18 +39,14 @@ void loop() {
 void cycleToNextColor(){
   if (currentColor == RED){
     currentColor = GREEN;
-    waitTime = redGreenTime;
   } else if (currentColor == YELLOW) {
     currentColor = RED;
-    waitTime = redGreenTime;
   } else {
     // current is GREEN - where to next?
     if (includeYellow) {
       currentColor = YELLOW;
-      waitTime = yellowTime;
     } else {
       currentColor = RED;
-      waitTime = redGreenTime;
     }
   }
 }
