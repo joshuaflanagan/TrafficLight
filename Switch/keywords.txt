@@ -1,0 +1,6 @@
+Switch	KEYWORD1
+poll	KEYWORD2
+switched	KEYWORD2
+on	KEYWORD2
+pushed	KEYWORD2
+released	KEYWORD2

@@ -1,0 +1,2 @@
+ShiftBrite	KEYWORD1
+changeColor	KEYWORD2
